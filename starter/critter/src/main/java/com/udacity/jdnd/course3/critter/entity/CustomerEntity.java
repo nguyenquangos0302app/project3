@@ -1,17 +1,24 @@
-package com.udacity.jdnd.course3.critter.user;
+package com.udacity.jdnd.course3.critter.entity;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents the form that customer request and response data takes. Does not map
- * to the database directly.
- */
-public class CustomerDTO {
+@Entity
+public class CustomerEntity {
+
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String phoneNumber;
+
     private String notes;
-    private List<Long> petIds;
+
+    @OneToMany(mappedBy = "customer")
+    private List<PetEntity> pets;
 
     public Long getId() {
         return id;
@@ -45,11 +52,18 @@ public class CustomerDTO {
         this.notes = notes;
     }
 
-    public List<Long> getPetIds() {
-        return petIds;
+    public List<PetEntity> getPets() {
+        return pets;
     }
 
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+    public void setPets(List<PetEntity> pets) {
+        this.pets = pets;
+    }
+
+    public void addPet(PetEntity pet) {
+        if(pets == null) {
+            pets = new ArrayList<>();
+        }
+        pets.add(pet);
     }
 }
